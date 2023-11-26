@@ -252,18 +252,19 @@ public class BukuAlamatGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tambahBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahBTActionPerformed
-       
+       // variabel mengampil nilai
         String name = namaTF.getText();
         String alamat = alamatTF.getText();
         String nohp = noTF.getText();
         
+        //memastikan tidak ada yang kosong
         if (name.isEmpty()||alamat.isEmpty()||nohp.isEmpty()){
             JOptionPane.showMessageDialog(this,"please enter field","try again",
                     JOptionPane.ERROR_MESSAGE);
         } else {
             DefaultTableModel model = (DefaultTableModel) dataTB.getModel();
             model.addRow(new Object[]{name,alamat,nohp});
-            
+            //list
             DefaultListModel listModel = new DefaultListModel();
               for (int i = 0; i < model.getRowCount(); i++) {
                   // Assuming the first column (index 0) in your table contains the names
@@ -271,7 +272,8 @@ public class BukuAlamatGUI extends javax.swing.JFrame {
                   listModel.addElement(tableName);
               }
               jList1.setModel(listModel);
-
+              
+              //clear
             namaTF.setText("");
             alamatTF.setText("");
             noTF.setText("");
@@ -286,9 +288,9 @@ public class BukuAlamatGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBTActionPerformed
 
     private void deleteBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBTActionPerformed
-        // TODO add your handling code here:
+        // memilih baris dari table
         int row = dataTB.getSelectedRow();
-        
+        //logika perbandingan untuk memilih tabel yang dihapus
         if(row<0) {
             JOptionPane.showMessageDialog(this,"No row selected! please select row",
                     "Select row",JOptionPane.ERROR_MESSAGE);
@@ -310,41 +312,41 @@ public class BukuAlamatGUI extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-DefaultTableModel model = (DefaultTableModel) dataTB.getModel();
-Vector<Vector> tableData = model.getDataVector();
-
-try (BufferedWriter writer = new BufferedWriter(new FileWriter("file.txt"))) {
-    for (Vector row : tableData) {
-        String name = row.get(0).toString();
-        String address = row.get(1).toString();
-        String phone = row.get(2).toString();
-        writer.write(name + "," + address + "," + phone);
-        writer.newLine();
-    }
-    JOptionPane.showMessageDialog(this, "Data saved to file.txt", "Save Successful", JOptionPane.INFORMATION_MESSAGE);
-} catch (IOException ex) {
-    ex.printStackTrace();
-    JOptionPane.showMessageDialog(this, "Error saving data to file", "Error", JOptionPane.ERROR_MESSAGE);
-}
+        //akses table
+        DefaultTableModel model = (DefaultTableModel) dataTB.getModel();
+        Vector<Vector> tableData = model.getDataVector();
+        //save
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("file.txt"))) {
+            for (Vector row : tableData) {
+                String name = row.get(0).toString();
+                String address = row.get(1).toString();
+                String phone = row.get(2).toString();
+                writer.write(name + "," + address + "," + phone);
+                writer.newLine();
+            }
+            JOptionPane.showMessageDialog(this, "Data saved to file.txt", "Save Successful", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving data to file", "Error", JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_formWindowClosing
 
     private void loadBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBTActionPerformed
         // TODO add your handling code here:
-         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-    int result = fileChooser.showOpenDialog(this);
-    if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
-        java.io.File selectedFile = fileChooser.getSelectedFile();
-        String filePath = selectedFile.getAbsolutePath();
+    javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
+            java.io.File selectedFile = fileChooser.getSelectedFile();
+            String filePath = selectedFile.getAbsolutePath();
         loadDataFromFile("file.txt");
-        
-            JOptionPane.showMessageDialog(this, "File successfully imported: " + filePath);
-} else if (result == javax.swing.JFileChooser.CANCEL_OPTION) {
-    // User canceled the file chooser
-    JOptionPane.showMessageDialog(this, "File import canceled.");
-} else if (result == javax.swing.JFileChooser.ERROR_OPTION) {
-    // An error occurred
-    JOptionPane.showMessageDialog(this, "Error during file import.");
-}
+        JOptionPane.showMessageDialog(this, "File successfully imported: " + filePath);
+        } else if (result == javax.swing.JFileChooser.CANCEL_OPTION) {
+            // User canceled the file chooser
+            JOptionPane.showMessageDialog(this, "File import canceled.");
+        } else if (result == javax.swing.JFileChooser.ERROR_OPTION) {
+            // An error occurred
+            JOptionPane.showMessageDialog(this, "Error during file import.");
+        }
         
     }//GEN-LAST:event_loadBTActionPerformed
     
